@@ -14,8 +14,8 @@ export default function Navbar() {
                 </button>
                 <img src='logo.png'/>
                 <div>
-                    <h2 className='text-blue font-bold text-[1.25rem]'>Chatty</h2>
-                    <p className='text-green'><span></span> Online</p>
+                    <h2 className='text-blue font-bold text-[1.25rem]'>Orahacks</h2>
+                    <p className='text-green'><span></span> Robot</p>
                 </div>
             </div>
             <button className='border-blue border-[2px] px-4 rounded-full font-semibold text-[1.1rem] hover:bg-blue hover:text-white active:bg-blue active:text-white'>Start over</button>
