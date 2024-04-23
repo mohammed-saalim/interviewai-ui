@@ -1,94 +1,87 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ConversationsPage from "./ConversationsPage";
 import InputCom from "./InputCom";
 import Navbar from "./NavBar";
 import axios from 'axios';
-
-// Dictionary of interview questions
-const interviewQuestions = {
-  1: "What is OOP",
-  2: "What is polymorphism",
-  3: "what is inheritance",
-  4: "what is data abstraction",
-  5: "what is data encapsulation",
-  // Add more questions as needed
-};
+import { useNavigate } from 'react-router-dom';
+import { questions } from '../Constants/questions';
 
 export default function ChatPage() {
-    const [messages, setMessages] = useState([]);
-    const [sentQuestionIds, setSentQuestionIds] = useState([]);
-    const [questionCounter, setQuestionCounter] = useState(0);
-    const [candidateAnswers, setCandidateAnswers] = useState({}); // State to store candidate answers
-    const [currentQuestion,setCurrentQuestion] = useState(); // State to store the current question ID [1,2,3,4,5,...
-useEffect(() => {
-    const questionIds = Object.keys(interviewQuestions);
-        const filteredQuestionIds = questionIds.filter(id => !sentQuestionIds.includes(id));
+  const [messages, setMessages] = useState([]);
+  const [sentQuestionIds, setSentQuestionIds] = useState([]);
+  const [candidateAnswers, setCandidateAnswers] = useState({});
+  const [questionCounter, setQuestionCounter] = useState(0);
+  const navigate = useNavigate();
+
+  // Function to start asking questions
+  useEffect(() => {
+    askQuestion();
+  }, []);
+
+  // Function to ask a question
+  const askQuestion = () => {
+    if (questionCounter >= 3) {
+      // If the question limit is reached, submit responses
+      console.log(sentQuestionIds, candidateAnswers); // Log the sent question IDs and candidate answers (for testing purposes)
+      sendThankYouMessage();
+      handleAPICall();
+      return;
+    }
+    const questionIds = Object.keys(questions);
+    const filteredQuestionIds = questionIds.filter(id => !sentQuestionIds.includes(id));
+    if (filteredQuestionIds.length === 0) return; // No more questions to ask
     const randomIndex = Math.floor(Math.random() * filteredQuestionIds.length);
     const randomQuestionId = filteredQuestionIds[randomIndex];
-    // Get the corresponding question and send it as the bot's response
-    const botResponse = interviewQuestions[randomQuestionId];
-    setCurrentQuestion(randomQuestionId);
-    setSentQuestionIds([...sentQuestionIds, randomQuestionId]); // Update the list of sent question IDs
-    setQuestionCounter(questionCounter + 1); // Increment the question counter
-    setMessages(prevMessages => [...prevMessages, { text: botResponse, sender: 'bot' }]);
-}, []);
-    // Function to handle sending messages
-    const handleSendMessage = async (message) => {
-        setMessages(prevMessages => [...prevMessages, { text: message, sender: 'user' }]);
-        // Randomly select an interview question ID
-        const questionIds = Object.keys(interviewQuestions);
-        const filteredQuestionIds = questionIds.filter(id => !sentQuestionIds.includes(id));
-        if (filteredQuestionIds.length === 0) {
-            // If all questions have been sent, reset the sentQuestionIds list and question counter
-            setSentQuestionIds([]);
-            setQuestionCounter(0);
-        } else {
-            const randomIndex = Math.floor(Math.random() * filteredQuestionIds.length);
-            const randomQuestionId = filteredQuestionIds[randomIndex];
-            // Get the corresponding question and send it as the bot's response
-            const botResponse = interviewQuestions[randomQuestionId];
-            setCurrentQuestion(randomQuestionId);
-            setSentQuestionIds([...sentQuestionIds, randomQuestionId]); // Update the list of sent question IDs
-            setQuestionCounter(questionCounter + 1); // Increment the question counter
-            
-            // If 3 questions have been asked, make the API call
-            if (questionCounter > 3) {
-                await handleAPICall(sentQuestionIds, candidateAnswers);
-                setQuestionCounter(0); // Reset the question counter after making the API call
-            }
-            
-            setTimeout(() => {
-                setMessages(prevMessages => [...prevMessages, { text: botResponse, sender: 'bot' }]);
-            }, 200);
-        }
-    };
+    const question = questions[randomQuestionId];
+    setSentQuestionIds([...sentQuestionIds, randomQuestionId]);
+    setMessages(prevMessages => [...prevMessages, { text: question, sender: 'bot' }]);
+    setQuestionCounter(questionCounter + 1);
+  };
 
-    // Function to handle the API call
-    const handleAPICall = async (sentQuestionIds, candidateAnswers) => {
-        try {
-            const response = await axios.post('http://localhost:5000/evaluate', {
-                sent_question_ids: sentQuestionIds, // Send the sent question IDs data to the API
-                candidate_answers: candidateAnswers // Send the candidate answers data to the API
-            });
-            console.log(response.data); // Log the response from the API
-        } catch (error) {
-            console.error('Error sending request:', error);
-        }
-    };
+  // Function to send a "thank you" message
+  const sendThankYouMessage = () => {
+    setMessages(prevMessages => [...prevMessages, { text: "Thank you for attending the interview!", sender: 'bot' }]);
+  };
 
-    // Function to update candidate answers
-    const updateCandidateAnswer = (questionId, answer) => {
-        setCandidateAnswers(prevAnswers => ({
-            ...prevAnswers,
-            [questionId]: answer
-        }));
-    };
+  // Function to handle the API call
+  const handleAPICall = async () => {
+    try {
+      const response = await axios.post('http://localhost:5000/evaluate', {
+        sent_question_ids: sentQuestionIds,
+        candidate_answers: candidateAnswers
+      });
+      console.log(response.data); // Log the response from the API
+      // Navigate to feedback page with response data
+      navigate('/feedback', { state: { data: response.data, questions: questions } });
+    } catch (error) {
+      console.error('Error sending request:', error);
+    }
+  };
 
-    return (
-        <div className="fade-in height px-8 flex flex-col justify-between">
-            <Navbar />
-            <ConversationsPage messages={messages} />
-            <InputCom questionId={currentQuestion} onSendMessage={handleSendMessage} onUpdateCandidateAnswer={updateCandidateAnswer} />
-        </div>
-    )
+  // Function to update candidate answers
+  const updateCandidateAnswer = (questionId, answer) => {
+    setCandidateAnswers(prevAnswers => ({
+      ...prevAnswers,
+      [questionId]: answer
+    }));
+  };
+
+  // Function to handle the input component sending a message
+  const handleSendMessage = (message) => {
+    setMessages(prevMessages => [...prevMessages, { text: message, sender: 'user' }]);
+    updateCandidateAnswer(sentQuestionIds[sentQuestionIds.length - 1], message);
+    askQuestion(); // Ask the next question after receiving the answer
+  };
+
+  return (
+    <div className="fade-in height px-8 flex flex-col justify-between">
+      <Navbar />
+      <ConversationsPage messages={messages} />
+      <InputCom
+        questionId={sentQuestionIds[sentQuestionIds.length - 1]} // Pass the current question ID
+        onSendMessage={handleSendMessage}
+        onUpdateCandidateAnswer={() => {}} // Empty function because we're not updating answers here
+      />
+    </div>
+  );
 }

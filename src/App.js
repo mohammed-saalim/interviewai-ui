@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import FirstLoadPage from './Components/FirstLoadPage';
 import OnboardPage from './Components/OnBoardPage';
 import ChatPage from './Components/ChatPage';
+import Feedback from './Components/Feedback';
 import {Routes, Route} from 'react-router-dom'
 
 function App() {
@@ -28,6 +29,7 @@ function App() {
        <Route path="/" element={<FirstLoadPage />} />
        <Route path="/onboard" element={<OnboardPage />} />
        <Route path="/chat" element={<ChatPage />} />
+       <Route path="/feedback" element={<Feedback />} />
       </Routes>
     </div>
    )
