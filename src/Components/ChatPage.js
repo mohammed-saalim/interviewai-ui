@@ -6,6 +6,8 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { questions } from '../Constants/questions';
 
+const apiUrl = process.env.REACT_APP_API_URL;
+
 export default function ChatPage() {
   const [messages, setMessages] = useState([]);
   const [sentQuestionIds, setSentQuestionIds] = useState([]);
@@ -44,19 +46,21 @@ export default function ChatPage() {
   };
 
   // Function to handle the API call
-  const handleAPICall = async () => {
-    try {
-      const response = await axios.post('http://localhost:5000/evaluate', {
-        sent_question_ids: sentQuestionIds,
-        candidate_answers: candidateAnswers
-      });
-      console.log(response.data); // Log the response from the API
-      // Navigate to feedback page with response data
-      navigate('/feedback', { state: { data: response.data, questions: questions } });
-    } catch (error) {
-      console.error('Error sending request:', error);
-    }
-  };
+
+
+const handleAPICall = async () => {
+  try {
+    const response = await axios.post(`${apiUrl}/evaluate`, {
+      sent_question_ids: sentQuestionIds,
+      candidate_answers: candidateAnswers
+    });
+    console.log(response.data); // Log the response from the API
+    navigate('/feedback', { state: { data: response.data, questions: questions } });
+  } catch (error) {
+    console.error('Error sending request:', error);
+  }
+};
+
 
   // Function to update candidate answers
   const updateCandidateAnswer = (questionId, answer) => {
