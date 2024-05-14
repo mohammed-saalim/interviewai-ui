@@ -4,6 +4,7 @@ import OnboardPage from './Components/OnBoardPage';
 import ChatPage from './Components/ChatPage';
 import Feedback from './Components/Feedback';
 import {Routes, Route} from 'react-router-dom'
+import Category from './Components/Category';
 
 function App() {
   const [messages, setMessages] = useState([]);
@@ -30,6 +31,7 @@ function App() {
        <Route path="/onboard" element={<OnboardPage />} />
        <Route path="/chat" element={<ChatPage />} />
        <Route path="/feedback" element={<Feedback />} />
+       <Route path="/category" element={<Category />} />
       </Routes>
     </div>
    )
