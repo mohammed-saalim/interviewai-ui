@@ -3,7 +3,7 @@ import { useLocation } from 'react-router-dom';
 
 const Feedback = () => {
     const location = useLocation();
-    const { data } = location.state;
+    const { data, questions } = location.state; // Assuming 'questions' contains the relevant category questions
 
     return (
         <div className="container">
@@ -11,10 +11,11 @@ const Feedback = () => {
             <div className="grid">
                 {Object.entries(data).map(([key, feedbackData]) => {
                     const { feedback, score } = feedbackData;
-
+                    const questionText = questions[key]; // Access the question text directly by key
+                    
                     return (
                         <div key={key} className="card">
-                            <h2 className="card-header">{`Question: ${feedbackData.question}`}</h2>
+                            <h2 className="card-header">{`Question: ${questionText}`}</h2>  {/* Displaying the question text */}
                             {score && (
                                 <p className="card-score score-animate">
                                     Score: {parseFloat(score).toFixed(1)}/1

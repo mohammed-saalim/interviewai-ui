@@ -24,7 +24,7 @@ export default function ChatPage() {
 
   const askQuestion = () => {
     console.log("Asking question from category:", category); // Debug log
-    if (questionCounter >= 3) {
+    if (questionCounter >= 4) {
       console.log("All questions asked, wrapping up...");
       sendThankYouMessage();
       handleAPICall();
