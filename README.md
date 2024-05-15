@@ -1,70 +1,68 @@
-# Getting Started with Create React App
+# AI Interview Platform
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Introduction
+The AI Interview Platform is an advanced web application designed to simulate real-world interviews using artificial intelligence. This platform allows users to engage in a dynamic interview experience where their answers are evaluated in real-time by AI, providing immediate feedback and scores. This project is ideal for both individuals preparing for job interviews and educational institutions aiming to enhance their students' interviewing skills.
 
-## Available Scripts
+## Live Deployment
+The application is deployed on Vercel and can be accessed [here](https://orahacks-chat-interview-ui.vercel.app/). The frontend is built with React, utilizing a responsive design to ensure a great experience across all devices.
 
-In the project directory, you can run:
+## Backend API
+The backend for this application is a Flask API deployed on Heroku. It handles all data processing and AI interactions. The source code for the backend can be found in its GitHub repository: [AI Interview API](https://github.com/mohammed-saalim/orahacks-api).
 
-### `npm start`
+## Features
+- **Dynamic Questioning**: The AI dynamically selects questions based on the category chosen by the user.
+- **Real-Time Feedback**: Users receive instant feedback on their answers, including a numerical score and detailed commentary.
+- **Multiple Categories**: Supports various categories including Database, OOP, General Knowledge, and Frontend questions.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Project Setup
+To set up this project locally, follow these steps:
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+1. **Clone the Repository:**
+   ```bash
+   git clone https://github.com/your-username/your-repo-name.git
+   cd your-repo-name
+   
+2. **Install dependencies:**
+   npm install
 
-### `npm test`
+3. **Run app:**
+   npm start
+    
+## Deployment
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Deployment
+This project is deployed on Vercel. To deploy your own version, follow these steps:
 
-### `npm run build`
+Fork the repository.
+Connect your GitHub account to Vercel.
+Select your fork to deploy.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Showcasing
+The project was showcased at OraHacks "Back to the Future" event. Check out the LinkedIn post about this event here. [here](https://www.linkedin.com/posts/orahacks_orahacks-back-to-the-future-was-an-action-ugcPost-7188349494508371968-F9QR?utm_source=share&utm_medium=member_desktop)
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Contributions
+Contributions are welcome! Please create a pull request or issue to propose changes or additions.
 
-### `npm run eject`
+## License
+This project is licensed under the MIT License - see the LICENSE file for details.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Screenshots
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+![WhatsApp Image 2024-05-15 at 12 20 48 AM](https://github.com/mohammed-saalim/orahacks-chat-interview-ui/assets/53993039/0898629d-c611-46a4-91ce-c8791a4ee173)
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
 
-## Learn More
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+<img width="1518" alt="Screenshot 2024-05-14 at 10 05 17 PM" src="https://github.com/mohammed-saalim/orahacks-chat-interview-ui/assets/53993039/614d8565-dfe3-4358-a6d3-479694f791cd">
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+<img width="1013" alt="Screenshot 2024-05-14 at 10 05 50 PM" src="https://github.com/mohammed-saalim/orahacks-chat-interview-ui/assets/53993039/488ab751-fdd2-476c-8523-8c02fd5c4818">
 
-### Code Splitting
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+<img width="1778" alt="Screenshot 2024-05-14 at 11 53 42 PM" src="https://github.com/mohammed-saalim/orahacks-chat-interview-ui/assets/53993039/4cfa8699-3166-48ca-bd4d-1a1aacd4a314">
 
-### Analyzing the Bundle Size
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+<img width="1550" alt="Screenshot 2024-05-14 at 11 54 08 PM" src="https://github.com/mohammed-saalim/orahacks-chat-interview-ui/assets/53993039/744f236a-f948-4aa9-a034-1f26bcdd82c6">
 
-### Making a Progressive Web App
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
 
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
