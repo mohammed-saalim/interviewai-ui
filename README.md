@@ -31,7 +31,7 @@ To set up this project locally, follow these steps:
 ## Deployment
 
 Deployment
-This project is deployed on Vercel. To deploy your own version, follow these steps:
+This project is deployed on Vercel. [here](https://orahacks-chat-interview-ui.vercel.app/) To deploy your own version, follow these steps:
 
 Fork the repository.
 Connect your GitHub account to Vercel.
