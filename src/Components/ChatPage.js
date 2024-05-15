@@ -13,63 +13,56 @@ export default function ChatPage() {
   const [sentQuestionIds, setSentQuestionIds] = useState([]);
   const [candidateAnswers, setCandidateAnswers] = useState({});
   const [questionCounter, setQuestionCounter] = useState(0);
+  const [isCompleted, setIsCompleted] = useState(false);
   const location = useLocation();
-  const { category } = location.state || {}; // Ensure that category is defined
-  const categoryQuestions = questions[category] || {}; // Ensure that categoryQuestions is defined
+  const { category } = location.state || {};
+  const categoryQuestions = questions[category] || {};
   const navigate = useNavigate();
 
   useEffect(() => {
-    askQuestion();
-  }, []); // This will only run once when the component mounts
+    if (!isCompleted) {
+        askQuestion();
+    }
+}, [isCompleted]); 
 
   const askQuestion = () => {
-    console.log("Asking question from category:", category); // Debug log
     if (questionCounter >= 4) {
-      console.log("All questions asked, wrapping up...");
-      sendThankYouMessage();
-      handleAPICall();
+      console.log("All questions asked, waiting for user submission...");
+      setIsCompleted(true); // Enable the submit button
       return;
     }
 
     const questionIds = Object.keys(categoryQuestions);
     const filteredQuestionIds = questionIds.filter(id => !sentQuestionIds.includes(id));
-    if (filteredQuestionIds.length === 0) return; // No more questions to ask
+    if (filteredQuestionIds.length === 0) return;
 
     const randomIndex = Math.floor(Math.random() * filteredQuestionIds.length);
     const randomQuestionId = filteredQuestionIds[randomIndex];
-    const question = categoryQuestions[randomQuestionId]; // Fetch question from categoryQuestions, not questions
-
-    console.log("Selected question:", question); // Debug log
+    const question = categoryQuestions[randomQuestionId];
 
     setSentQuestionIds(prev => [...prev, randomQuestionId]);
     setMessages(prevMessages => [...prevMessages, { text: question, sender: 'bot' }]);
     setQuestionCounter(prevCount => prevCount + 1);
   };
 
-  const sendThankYouMessage = () => {
-    setMessages(prevMessages => [...prevMessages, { text: "Thank you for attending the interview!", sender: 'bot' }]);
-  };
-
   const handleAPICall = async () => {
+    const questionsToSend = {};
+    sentQuestionIds.forEach(id => {
+      questionsToSend[id] = categoryQuestions[id];
+    });
+
     try {
-      // Prepare the questions to send
-      const questionsToSend = {};
-      sentQuestionIds.forEach(id => {
-        questionsToSend[id] = categoryQuestions[id];
-      });
-  
       const response = await axios.post(`${apiUrl}/evaluate`, {
         sent_question_ids: sentQuestionIds,
         candidate_answers: candidateAnswers,
-        questions: questionsToSend // Include the actual questions in the request
+        questions: questionsToSend
       });
-      console.log("API Response:", response.data); // Log the response from the API
+      console.log("API Response:", response.data);
       navigate('/feedback', { state: { data: response.data, questions: categoryQuestions } });
     } catch (error) {
       console.error('Error sending request:', error);
     }
   };
-  
 
   const updateCandidateAnswer = (questionId, answer) => {
     setCandidateAnswers(prevAnswers => ({
@@ -81,7 +74,9 @@ export default function ChatPage() {
   const handleSendMessage = (message) => {
     setMessages(prevMessages => [...prevMessages, { text: message, sender: 'user' }]);
     updateCandidateAnswer(sentQuestionIds[sentQuestionIds.length - 1], message);
-    askQuestion();
+    if (!isCompleted) { // Only ask next question if not completed
+      askQuestion();
+    }
   };
 
   return (
@@ -89,10 +84,16 @@ export default function ChatPage() {
       <Navbar />
       <ConversationsPage messages={messages} />
       <InputCom
-        questionId={sentQuestionIds[sentQuestionIds.length - 1]} // Ensure the current question ID is correctly defined
+        questionId={sentQuestionIds[sentQuestionIds.length - 1]}
         onSendMessage={handleSendMessage}
-        onUpdateCandidateAnswer={() => {}} // Placeholder function
+        onUpdateCandidateAnswer={updateCandidateAnswer}
+        isCompleted={isCompleted}
       />
+      {isCompleted && (
+        <button className="bg-blue-500 text-white text-lg font-bold py-3 px-6 flex justify-center items-center w-full max-w-[600px] rounded-full self-center sticky bottom-10 transition duration-300 ease-in-out hover:bg-blue-600" onClick={handleAPICall}>
+          Submit Interview
+        </button>
+      )}
     </div>
   );
 }
