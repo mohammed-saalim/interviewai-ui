@@ -1,0 +1,11 @@
+deploy:
+
+heroku login
+heroku git:remote -a interviewaiapi
+git add .
+git commit -m ""
+git push heroku main
+
+
+if conficts:
+git pull heroku main
