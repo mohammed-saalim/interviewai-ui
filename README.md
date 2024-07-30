@@ -45,6 +45,10 @@ Contributions are welcome! Please create a pull request or issue to propose chan
 This project is licensed under the MIT License - see the LICENSE file for details.
 
 
+## Video demo
+
+[here](https://vimeo.com/992060910?share=copy)
+
 ## Screenshots
 
 
