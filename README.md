@@ -37,9 +37,6 @@ Fork the repository.
 Connect your GitHub account to Vercel.
 Select your fork to deploy.
 
-## Showcasing
-The project was showcased at OraHacks "Back to the Future" event. Check out the LinkedIn post about this event here. [here](https://www.linkedin.com/posts/orahacks_orahacks-back-to-the-future-was-an-action-ugcPost-7188349494508371968-F9QR?utm_source=share&utm_medium=member_desktop)
-
 
 ## Contributions
 Contributions are welcome! Please create a pull request or issue to propose changes or additions.
@@ -49,8 +46,6 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 
 ## Screenshots
-
-![WhatsApp Image 2024-05-15 at 12 20 48 AM](https://github.com/mohammed-saalim/orahacks-chat-interview-ui/assets/53993039/0898629d-c611-46a4-91ce-c8791a4ee173)
 
 
 
