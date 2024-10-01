@@ -6,7 +6,7 @@ import axios from 'axios';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { questions } from '../Constants/questions';
 
-const apiUrl = process.env.REACT_APP_API_URL;
+const openAiApiKey = process.env.OPENAI_API_KEY; // Store your OpenAI API key here
 
 export default function ChatPage() {
   const [messages, setMessages] = useState([]);
@@ -22,9 +22,9 @@ export default function ChatPage() {
 
   useEffect(() => {
     if (!isCompleted) {
-        askQuestion();
+      askQuestion();
     }
-}, [isCompleted]); 
+  }, [isCompleted]);
 
   const askQuestion = () => {
     if (questionCounter >= 4) {
@@ -48,25 +48,76 @@ export default function ChatPage() {
 
   const handleAPICall = async () => {
     setLoading(true); // Set loading state to true
+
     const questionsToSend = {};
     sentQuestionIds.forEach(id => {
       questionsToSend[id] = categoryQuestions[id];
     });
 
     try {
-      const response = await axios.post(`${apiUrl}/evaluate`, {
-        sent_question_ids: sentQuestionIds,
-        candidate_answers: candidateAnswers,
-        questions: questionsToSend
-      });
-      console.log("API Response:", response.data);
-      navigate('/feedback', { state: { data: response.data, questions: categoryQuestions } });
+      const responses = {};
+      for (const questionId of sentQuestionIds) {
+        const question = questionsToSend[questionId];
+        const candidateAnswer = candidateAnswers[questionId];
+
+        if (question && candidateAnswer) {
+          const result = await evaluateAnswer(question, candidateAnswer);
+          responses[questionId] = result;
+        } else {
+          responses[questionId] = { feedback: "Question or answer missing.", score: null };
+        }
+      }
+
+      console.log("API Response:", responses);
+      navigate('/feedback', { state: { data: responses, questions: categoryQuestions } });
     } catch (error) {
       console.error('Error sending request:', error);
     } finally {
-      setLoading(false); // Set loading state to false after the request completes
+      setLoading(false);
     }
   };
+
+  
+  const evaluateAnswer = async (question, candidateAnswer) => {
+    const messages = [
+      { role: "system", content: "You are an interview evaluator." },
+      { role: "user", content: `Please evaluate the following answer to the question '${question}'. Analyze the depth of understanding and accuracy demonstrated by the candidate's response. Provide a detailed summary and confidence score. Answer: ${candidateAnswer}` }
+    ];
+  
+    try {
+      const response = await axios.post(
+        'https://api.openai.com/v1/chat/completions', 
+        {
+          model: "gpt-3.5-turbo",
+          messages: messages,
+          max_tokens: 300,
+          temperature: 0.5
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${openAiApiKey}`,
+            'Content-Type': 'application/json'
+          }
+        }
+      );
+  
+      const completionText = response.data.choices[0].message.content;
+      console.log("Completion Text:", completionText);
+  
+      // Extract score using a regex pattern
+      const scoreMatch = completionText.match(/Score:\s*(\d\.\d+)/i);
+      const score = scoreMatch ? parseFloat(scoreMatch[1]) : "Score not found";
+  
+      return {
+        feedback: completionText.trim(),
+        score: score
+      };
+    } catch (error) {
+      console.error("OpenAI API error:", error);
+      return { feedback: "Error evaluating the answer", score: null };
+    }
+  };
+  
 
   const updateCandidateAnswer = (questionId, answer) => {
     setCandidateAnswers(prevAnswers => ({
