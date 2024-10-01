@@ -4,10 +4,7 @@
 The AI Interview Platform is an advanced web application designed to simulate real-world interviews using artificial intelligence. This platform allows users to engage in a dynamic interview experience where their answers are evaluated in real-time by AI, providing immediate feedback and scores. This project is ideal for both individuals preparing for job interviews and educational institutions aiming to enhance their students' interviewing skills.
 
 ## Live Deployment
-The application is deployed on Vercel and can be accessed [here](https://orahacks-chat-interview-ui.vercel.app/). The frontend is built with React, utilizing a responsive design to ensure a great experience across all devices.
-
-## Backend API
-The backend for this application is a Flask API deployed on Heroku. It handles all data processing and AI interactions. The source code for the backend can be found in its GitHub repository: [AI Interview API](https://github.com/mohammed-saalim/interviewai-api).
+The application is deployed on Vercel and can be accessed [here](https://orahacks-chat-interview-ui.vercel.app/). The app is built with React, utilizing a responsive design to ensure a great experience across all devices.
 
 ## Features
 - **Dynamic Questioning**: The AI dynamically selects questions based on the category chosen by the user.
