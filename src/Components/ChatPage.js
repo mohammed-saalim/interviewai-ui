@@ -27,7 +27,7 @@ export default function ChatPage() {
   }, [isCompleted]);
 
   const askQuestion = () => {
-    if (questionCounter >= 4) {  
+    if (questionCounter >= 4) {  // Limit to 3 questions
       console.log("All questions asked, waiting for user submission...");
       setIsCompleted(true); // Enable the submit button
       return;
@@ -81,7 +81,7 @@ export default function ChatPage() {
   const evaluateAnswer = async (question, candidateAnswer) => {
     const messages = [
       { role: "system", content: "You are an interview evaluator. Your job is to evaluate interview answers based on their depth, understanding, and accuracy. Provide a confidence score at the end in the format 'Score: X.X'." },
-      { role: "user", content: `Evaluate the following answer for the question '${question}': Answer: ${candidateAnswer}` }
+      { role: "user", content: `Evaluate the following candidate's answer based on the question '${question}'. Make sure to analyze the depth of understanding, highlight specific differences or missing concepts compared to an ideal answer. Provide a summary and clearly give a confidence score (from 0 to 1) that reflects the accuracy and quality of the answer. Answer: ${candidateAnswer}` }
     ];
 
     try {
