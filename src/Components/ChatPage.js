@@ -6,7 +6,7 @@ import axios from 'axios';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { questions } from '../Constants/questions';
 
-const openAiApiKey = process.env.OPENAI_API_KEY; // Store your OpenAI API key here
+const openAiApiKey = process.env.REACT_APP_OPENAI_API; // Store your OpenAI API key here
 
 export default function ChatPage() {
   const [messages, setMessages] = useState([]);
