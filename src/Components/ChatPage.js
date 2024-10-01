@@ -27,7 +27,7 @@ export default function ChatPage() {
   }, [isCompleted]);
 
   const askQuestion = () => {
-    if (questionCounter >= 4) {
+    if (questionCounter >= 4) {  
       console.log("All questions asked, waiting for user submission...");
       setIsCompleted(true); // Enable the submit button
       return;
@@ -77,13 +77,13 @@ export default function ChatPage() {
     }
   };
 
-  
+  // Function to call OpenAI directly and evaluate answers using gpt-3.5-turbo
   const evaluateAnswer = async (question, candidateAnswer) => {
     const messages = [
-      { role: "system", content: "You are an interview evaluator." },
-      { role: "user", content: `Please evaluate the following answer to the question '${question}'. Analyze the depth of understanding and accuracy demonstrated by the candidate's response. Provide a detailed summary and confidence score. Answer: ${candidateAnswer}` }
+      { role: "system", content: "You are an interview evaluator. Your job is to evaluate interview answers based on their depth, understanding, and accuracy. Provide a confidence score at the end in the format 'Score: X.X'." },
+      { role: "user", content: `Evaluate the following answer for the question '${question}': Answer: ${candidateAnswer}` }
     ];
-  
+
     try {
       const response = await axios.post(
         'https://api.openai.com/v1/chat/completions', 
@@ -100,24 +100,26 @@ export default function ChatPage() {
           }
         }
       );
-  
+
       const completionText = response.data.choices[0].message.content;
       console.log("Completion Text:", completionText);
-  
+
       // Extract score using a regex pattern
-      const scoreMatch = completionText.match(/Score:\s*(\d\.\d+)/i);
-      const score = scoreMatch ? parseFloat(scoreMatch[1]) : "Score not found";
-  
-      return {
-        feedback: completionText.trim(),
-        score: score
-      };
+      const scoreRegex = /Score:\s*(\d\.\d+)/i;
+      const match = completionText.match(scoreRegex);
+      const score = match ? parseFloat(match[1]) : null;
+
+      if (score === null) {
+        console.warn("Score not found in response");
+        return { feedback: completionText.trim(), score: "Score not available" };
+      }
+
+      return { feedback: completionText.trim(), score: score };
     } catch (error) {
       console.error("OpenAI API error:", error);
       return { feedback: "Error evaluating the answer", score: null };
     }
   };
-  
 
   const updateCandidateAnswer = (questionId, answer) => {
     setCandidateAnswers(prevAnswers => ({
