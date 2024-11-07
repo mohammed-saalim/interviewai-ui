@@ -32,7 +32,7 @@ This project is deployed on Vercel. [here](https://orahacks-chat-interview-ui.ve
 
 Fork the repository.
 Connect your GitHub account to Vercel.
-Select your fork to deploy.
+Select your fork to deploy
 
 
 ## Contributions
