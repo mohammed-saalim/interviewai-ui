@@ -88,7 +88,7 @@ export default function ChatPage() {
       const response = await axios.post(
         'https://api.openai.com/v1/chat/completions', 
         {
-          model: "gpt-3.5-turbo",
+          model: "gpt-4o-mini",
           messages: messages,
           max_tokens: 300,
           temperature: 0.5
